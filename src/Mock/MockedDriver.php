@@ -29,6 +29,13 @@ use Exception;
  */
 class MockedDriver implements Driver
 {
+    private ?AbstractPlatform $platform;
+
+    public function __construct(?AbstractPlatform $platform = null)
+    {
+        $this->platform = $platform;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -43,7 +50,11 @@ class MockedDriver implements Driver
      */
     public function getDatabasePlatform(ServerVersionProvider $versionProvider): AbstractPlatform
     {
-        throw new Exception('Mocked method. Unable to be used');
+        if ($this->platform === null) {
+            throw new Exception('Mocked method. Unable to be used');
+        }
+
+        return $this->platform;
     }
 
     /**

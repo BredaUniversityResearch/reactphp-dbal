@@ -16,7 +16,11 @@ declare(strict_types=1);
 namespace Drift\DBAL\Mock;
 
 use Doctrine\DBAL\Cache\QueryCacheProfile;
+use Doctrine\DBAL\Configuration;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Driver;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -27,6 +31,19 @@ use Exception;
  */
 class MockedDBALConnection extends Connection
 {
+    private AbstractPlatform $mockPlatform;
+
+    public function __construct(array $params, Driver $driver, AbstractPlatform $platform)
+    {
+        $this->mockPlatform = $platform;
+        parent::__construct($params, $driver, new Configuration());
+    }
+
+    public function getDatabasePlatform(): AbstractPlatform
+    {
+        return $this->mockPlatform;
+    }
+
     /**
      * Prepares an SQL statement.
      *

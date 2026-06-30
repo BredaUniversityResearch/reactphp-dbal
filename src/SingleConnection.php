@@ -160,10 +160,12 @@ class SingleConnection implements Connection
      */
     public function createQueryBuilder(): QueryBuilder
     {
+        $mockDriver = new MockedDriver($this->platform);
+
         return new QueryBuilder(
             new MockedDBALConnection([
                 'platform' => $this->platform,
-            ], new MockedDriver())
+            ], $mockDriver, $this->platform)
         );
     }
 
