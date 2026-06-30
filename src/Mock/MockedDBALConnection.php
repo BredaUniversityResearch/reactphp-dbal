@@ -84,7 +84,7 @@ class MockedDBALConnection extends Connection
     /**
      * {@inheritdoc}
      */
-    public function beginTransaction(): bool
+    public function beginTransaction(): void
     {
         throw new Exception('Mocked method. Unable to be used');
     }
