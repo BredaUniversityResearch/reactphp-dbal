@@ -17,7 +17,6 @@ namespace Drift\DBAL\Mock;
 
 use Doctrine\DBAL\Cache\QueryCacheProfile;
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Result;
 use Doctrine\DBAL\Statement;
 use Doctrine\DBAL\Types\Type;
@@ -33,7 +32,7 @@ class MockedDBALConnection extends Connection
      *
      * @param string $sql the SQL statement to prepare
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function prepare(string $sql): Statement
     {
@@ -43,6 +42,7 @@ class MockedDBALConnection extends Connection
     /**
      * BC layer for a wide-spread use-case of old DBAL APIs.
      *
+     * @throws Exception
      * @deprecated This API is deprecated and will be removed after 2022
      */
     public function query(string $sql): Result
@@ -53,9 +53,9 @@ class MockedDBALConnection extends Connection
     /**
      * {@inheritdoc}
      *
-     * @return mixed
+     * @return string
      */
-    public function quote($input, $type = ParameterType::STRING)/*: mixed // <--- from php 8*/
+    public function quote(string $value): string
     {
         throw new Exception('Mocked method. Unable to be used');
     }
@@ -63,6 +63,7 @@ class MockedDBALConnection extends Connection
     /**
      * BC layer for a wide-spread use-case of old DBAL APIs.
      *
+     * @throws Exception
      * @deprecated This API is deprecated and will be removed after 2022
      */
     public function exec(string $sql): int
@@ -73,9 +74,9 @@ class MockedDBALConnection extends Connection
     /**
      * {@inheritdoc}
      *
-     * @return string|int|false A string representation of the last inserted ID.
+     * @return string|int A string representation of the last inserted ID.
      */
-    public function lastInsertId($name = null)/*: string|int|false // <--- from php 8 */
+    public function lastInsertId($name = null): int|string
     {
         throw new Exception('Mocked method. Unable to be used');
     }
@@ -91,7 +92,7 @@ class MockedDBALConnection extends Connection
     /**
      * {@inheritdoc}
      */
-    public function commit(): bool
+    public function commit(): void
     {
         throw new Exception('Mocked method. Unable to be used');
     }
@@ -99,7 +100,7 @@ class MockedDBALConnection extends Connection
     /**
      * {@inheritdoc}
      */
-    public function rollBack(): bool
+    public function rollBack(): void
     {
         throw new Exception('Mocked method. Unable to be used');
     }
@@ -130,7 +131,7 @@ class MockedDBALConnection extends Connection
      * @param list<mixed>|array<string, mixed>                                     $params Query parameters
      * @param array<int, int|string|Type|null>|array<string, int|string|Type|null> $types  Parameter types
      *
-     * @throws \Doctrine\DBAL\Exception
+     * @throws Exception
      */
     public function executeQuery(
         string $sql,
@@ -144,10 +145,11 @@ class MockedDBALConnection extends Connection
     /**
      * BC layer for a wide-spread use-case of old DBAL APIs.
      *
+     * @param array $params The query parameters
+     * @param array<int|string|null> $types The parameter types
+     * @throws Exception
      * @deprecated This API is deprecated and will be removed after 2022
      *
-     * @param array<mixed>           $params The query parameters
-     * @param array<int|string|null> $types  The parameter types
      */
     public function executeUpdate(string $sql, array $params = [], array $types = []): int
     {
