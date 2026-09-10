@@ -308,7 +308,7 @@ class SingleConnection implements Connection
         array $values
     ): PromiseInterface {
         if (empty($values)) {
-            throw InvalidArgumentException::fromEmptyCriteria();
+            throw new InvalidArgumentException('Empty criteria was used to build a query');
         }
 
         $queryBuilder = $this
@@ -335,7 +335,7 @@ class SingleConnection implements Connection
         array $values
     ): PromiseInterface {
         if (empty($id)) {
-            throw InvalidArgumentException::fromEmptyCriteria();
+            throw new InvalidArgumentException('Empty criteria was used to build a query');
         }
 
         $queryBuilder = $this
@@ -404,7 +404,7 @@ class SingleConnection implements Connection
         bool $autoincrementId = false
     ): PromiseInterface {
         if (empty($fields)) {
-            throw InvalidArgumentException::fromEmptyCriteria();
+            throw new InvalidArgumentException('Empty criteria was used to build a query');
         }
 
         $schema = new Schema();
