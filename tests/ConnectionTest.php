@@ -228,7 +228,7 @@ abstract class ConnectionTest extends TestCase
                     ->query($queryBuilder
                         ->select('*')
                         ->from('test', 't')
-                        ->where($queryBuilder->expr()->orX(
+                        ->where($queryBuilder->expr()->or(
                             $queryBuilder->expr()->eq('t.id', '?'),
                             $queryBuilder->expr()->eq('t.id', '?')
                         ))
