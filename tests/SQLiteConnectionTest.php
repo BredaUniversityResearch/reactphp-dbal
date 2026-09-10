@@ -15,7 +15,7 @@ declare(strict_types=1);
 
 namespace Drift\DBAL\Tests;
 
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Drift\DBAL\Connection;
 use Drift\DBAL\Credentials;
 use Drift\DBAL\Driver\SQLite\SQLiteDriver;
@@ -32,7 +32,12 @@ class SQLiteConnectionTest extends ConnectionTest
      */
     public function getConnection(LoopInterface $loop): Connection
     {
-        $platform = new SqlitePlatform();
+        $platformClass = class_exists(\Doctrine\DBAL\Platforms\SQLitePlatform::class)
+            ? \Doctrine\DBAL\Platforms\SQLitePlatform::class
+            : \Doctrine\DBAL\Platforms\SqlitePlatform::class;
+
+        /** @var AbstractPlatform $platform */
+        $platform = new $platformClass();
 
         return SingleConnection::createConnected(new SQLiteDriver(
             $loop
