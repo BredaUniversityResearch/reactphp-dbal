@@ -42,7 +42,7 @@ class Exception extends \Exception implements \Doctrine\DBAL\Driver\Exception
         $this->sqlState = $sqlState;
     }
 
-    public function getSQLState()
+    public function getSQLState(): ?string
     {
         return $this->sqlState;
     }
