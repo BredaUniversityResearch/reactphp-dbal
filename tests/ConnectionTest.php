@@ -315,7 +315,7 @@ abstract class ConnectionTest extends TestCase
                         $this->assertNull($results[1]);
                         $listResults = $results[2];
                         usort($listResults, function ($a1, $a2) {
-                            return $a1['id'] > $a2['id'];
+                            return $a1['id'] <=> $a2['id'];
                         });
 
                         $this->assertSame($listResults, [
