@@ -530,14 +530,14 @@ class ConnectionPool implements Connection, ConnectionPoolInterface
             /** @var \Drift\DBAL\ConnectionWorker $worker */
             $worker = $this->connections[$connection];
             $worker->setLeased(false);
-            return resolve();
+            return resolve(null);
         }
 
         $deferred = $this->deferreds->current();
         $this->deferreds->detach($deferred);
 
         $deferred->resolve($this->connections[$connection]);
-        return resolve();
+        return resolve(null);
     }
 
 }
