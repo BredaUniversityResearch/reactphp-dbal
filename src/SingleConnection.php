@@ -162,7 +162,7 @@ class SingleConnection implements Connection
         return new QueryBuilder(
             new MockedDBALConnection([
                 'platform' => $this->platform,
-            ], new MockedDriver())
+            ], new MockedDriver($this->platform))
         );
     }
 
