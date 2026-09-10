@@ -28,7 +28,6 @@ use Drift\DBAL\Mock\MockedDriver;
 use React\EventLoop\Loop;
 use React\EventLoop\TimerInterface;
 use RuntimeException;
-use function React\Promise\map;
 use React\Promise\PromiseInterface;
 use function React\Promise\resolve;
 
@@ -206,13 +205,17 @@ class SingleConnection implements Connection
      */
     public function executeSQLs(array $sqls): PromiseInterface
     {
-        return
-            map($sqls, function (string $sql) {
+        $promise = resolve(null);
+
+        foreach ($sqls as $sql) {
+            $promise = $promise->then(function () use ($sql) {
                 return $this->queryBySQL($sql);
-            })
-                ->then(function () {
-                    return $this;
-                });
+            });
+        }
+
+        return $promise->then(function () {
+            return $this;
+        });
     }
 
     /**
