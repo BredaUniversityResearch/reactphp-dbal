@@ -15,9 +15,9 @@ declare(strict_types=1);
 
 namespace Drift\DBAL\Driver\PostgreSQL;
 
+use Doctrine\DBAL\ConnectionException;
 use Doctrine\DBAL\Driver\API\ExceptionConverter as ExceptionConverterInterface;
 use Doctrine\DBAL\Driver\API\PostgreSQL\ExceptionConverter;
-use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Query;
 use Doctrine\DBAL\Query\QueryBuilder;
 use Drift\DBAL\Credentials;
@@ -77,7 +77,7 @@ class PostgreSQLDriver extends AbstractDriver
         array $parameters
     ): PromiseInterface {
         if ($this->isClosed) {
-            return reject(new Exception('Connection closed'));
+            return reject(new ConnectionException('Connection closed'));
         }
 
         /**
@@ -134,7 +134,7 @@ class PostgreSQLDriver extends AbstractDriver
     public function insert(QueryBuilder $queryBuilder, string $table, array $values): PromiseInterface
     {
         if ($this->isClosed) {
-            return reject(new Exception('Connection closed'));
+            return reject(new ConnectionException('Connection closed'));
         }
 
         $queryBuilder = $this->createInsertQuery($queryBuilder, $table, $values);
